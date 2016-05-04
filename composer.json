@@ -1,0 +1,37 @@
+{
+    "name": "arachne/event-dispatcher",
+    "description": "Integration of symfony/event-dispatcher to Nette framework.",
+    "type": "library",
+    "keywords": [ "nette", "arachne", "symfony", "events" ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jáchym Toušek",
+            "homepage": "http://enumag.cz",
+            "email": "enumag@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "arachne/container-adapter": "^0.1.0|^0.2.0",
+        "nette/di": "^2.3.0",
+        "nette/utils": "^2.3.0",
+        "symfony/event-dispatcher": "^2.8.0|^3.0.0"
+    },
+    "require-dev": {
+        "arachne/bootstrap": "~0.2.1",
+        "codeception/codeception": "~2.2.0@rc",
+        "nette/application": "^2.3",
+        "kdyby/console": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Arachne\\EventDispatcher\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Integration\\": "tests/integration/src"
+        }
+    }
+}

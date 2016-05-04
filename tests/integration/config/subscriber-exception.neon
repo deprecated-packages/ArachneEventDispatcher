@@ -1,0 +1,9 @@
+extensions:
+    arachne.containeradapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
+    arachne.eventdispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
+
+services:
+    subscriber:
+        class: DateTime
+        tags:
+            - arachne.eventDispatcher.subscriber

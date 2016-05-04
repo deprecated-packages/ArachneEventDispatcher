@@ -1,0 +1,15 @@
+extensions:
+    arachne.containeradapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
+    arachne.eventdispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
+    nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension(%debugMode%, [], %tempDir%)
+    nette.http: Nette\Bridges\HttpDI\HttpExtension
+
+nette.application:
+    scanDirs: false
+
+services:
+    - Nette\Application\Routers\RouteList
+    -
+        class: Tests\Integration\Fixtures\ApplicationSubscriber
+        tags:
+            - arachne.eventDispatcher.subscriber
