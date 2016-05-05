@@ -22,8 +22,6 @@ class EventDispatcherExtension extends CompilerExtension
 {
     /**
      * Subscribers with this tag are added to the event dispatcher.
-     *
-     * @var string
      */
     const TAG_SUBSCRIBER = 'arachne.eventDispatcher.subscriber';
 
