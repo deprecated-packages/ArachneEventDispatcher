@@ -138,6 +138,42 @@ class EventDispatcherExtensionTest extends Unit
         );
     }
 
+    public function testApplicationShutdownWithoutException()
+    {
+        $container = $this->createContainer('application.neon');
+
+        /* @var $application Application */
+        $application = $container->getByType(Application::class);
+        /* @var $subscriber ApplicationSubscriber */
+        $subscriber = $container->getByType(ApplicationSubscriber::class);
+
+        $called = [];
+
+        $subscriber->setAssertionCallback(function ($event, $name) use (&$called) {
+            $called[] = $name;
+
+            switch ($name) {
+                case ApplicationEvents::SHUTDOWN:
+                    $this->assertInstanceOf(ApplicationShutdownEvent::class, $event);
+                    $this->assertInstanceOf(Application::class, $event->getApplication());
+                    $this->assertNull($event->getException());
+                    break;
+
+                default:
+                    $this->fail("Unknown event '$name'");
+            }
+        });
+
+        $application->onShutdown($application);
+
+        $this->assertSame(
+            [
+                ApplicationEvents::SHUTDOWN,
+            ],
+            $called
+        );
+    }
+
     public function testConsole()
     {
         $container = $this->createContainer('console.neon');

@@ -114,7 +114,7 @@ class EventDispatcherExtension extends CompilerExtension
     private function bindApplicationEvent(ServiceDefinition $application, $event, $class, $property, $argument = null)
     {
         $argument = $argument ? ', $' . $argument : '';
-        $application->addSetup('?->?[] = function ($application' . $argument . ') use ($dispatcher) { $dispatcher->dispatch(?, new ' . $class . '($application' . $argument . ')); }', [
+        $application->addSetup('?->?[] = function ($application' . $argument . ' = null) use ($dispatcher) { $dispatcher->dispatch(?, new ' . $class . '($application' . $argument . ')); }', [
             '@self',
             $property,
             $event,
