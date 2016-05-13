@@ -17,7 +17,6 @@ use Nette\Application\IPresenter;
 use Nette\Application\IResponse;
 use Nette\Application\Request;
 use Nette\DI\Container;
-use PHPUnit_Framework_Assert;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -179,9 +178,7 @@ class EventDispatcherExtensionTest extends Unit
         $container = $this->createContainer('console.neon');
         $application = $container->getByType(Console::class);
         $this->assertInstanceOf(Console::class, $application);
-        $dispatcher = PHPUnit_Framework_Assert::getObjectAttribute($application, 'dispatcher');
-        $this->assertInstanceOf(EventDispatcherInterface::class, $dispatcher);
-        $this->assertSame($container->getByType(EventDispatcherInterface::class), $dispatcher);
+        $this->assertAttributeSame($container->getByType(EventDispatcherInterface::class), 'dispatcher', $application);
     }
 
     /**
