@@ -57,11 +57,11 @@ class EventDispatcherExtensionTest extends Unit
 
         $this->assertSame(
             [
-                TestSubscriber::class . '::event1',
-                TestSubscriber::class . '::event2',
-                TestSubscriber::class . '::event3',
-                TestSubscriber::class . '::event4handler2',
-                TestSubscriber::class . '::event4handler1',
+                TestSubscriber::class.'::event1',
+                TestSubscriber::class.'::event2',
+                TestSubscriber::class.'::event3',
+                TestSubscriber::class.'::event4handler2',
+                TestSubscriber::class.'::event4handler1',
             ],
             $subscriber->log
         );
@@ -188,7 +188,8 @@ class EventDispatcherExtensionTest extends Unit
     {
         $config = new Configurator();
         $config->setTempDirectory(TEMP_DIR);
-        $config->addConfig(__DIR__ . '/../config/' . $file);
+        $config->addConfig(__DIR__.'/../config/'.$file);
+
         return $config->createContainer();
     }
 }

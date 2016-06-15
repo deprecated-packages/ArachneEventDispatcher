@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Arachne
  *
  * Copyright (c) Jáchym Toušek (enumag@gmail.com)
@@ -51,7 +51,7 @@ class EventDispatcherExtension extends CompilerExtension
 
         // Bind dispatcher to Nette\Application\Application events.
         foreach ($builder->findByType('Nette\Application\Application') as $application) {
-            $application->addSetup('$dispatcher = ?', ['@' . $this->prefix('eventDispatcher')]);
+            $application->addSetup('$dispatcher = ?', ['@'.$this->prefix('eventDispatcher')]);
             $this->bindApplicationEvent($application, ApplicationEvents::STARTUP, 'Arachne\EventDispatcher\Event\ApplicationEvent', 'onStartup');
             $this->bindApplicationEvent($application, ApplicationEvents::SHUTDOWN, 'Arachne\EventDispatcher\Event\ApplicationShutdownEvent', 'onShutdown', 'exception');
             $this->bindApplicationEvent($application, ApplicationEvents::REQUEST, 'Arachne\EventDispatcher\Event\ApplicationRequestEvent', 'onRequest', 'request');
@@ -70,8 +70,8 @@ class EventDispatcherExtension extends CompilerExtension
      * Emulates ContainerAwareEventDispatcher::addSubscriberService() to prevent autoloading of all subscribers in runtime.
      *
      * @param ServiceDefinition $dispatcher
-     * @param string $service
-     * @param string $class
+     * @param string            $service
+     * @param string            $class
      */
     private function registerSubscriber(ServiceDefinition $dispatcher, $service, $class)
     {
@@ -106,15 +106,15 @@ class EventDispatcherExtension extends CompilerExtension
      * Binds dispatcher to Nette\Application\Application event.
      *
      * @param ServiceDefinition $application
-     * @param string $event
-     * @param string $class
-     * @param string $property
-     * @param string $argument
+     * @param string            $event
+     * @param string            $class
+     * @param string            $property
+     * @param string            $argument
      */
     private function bindApplicationEvent(ServiceDefinition $application, $event, $class, $property, $argument = null)
     {
-        $argument = $argument ? ', $' . $argument : '';
-        $application->addSetup('?->?[] = function ($application' . $argument . ' = null) use ($dispatcher) { $dispatcher->dispatch(?, new ' . $class . '($application' . $argument . ')); }', [
+        $argument = $argument ? ', $'.$argument : '';
+        $application->addSetup('?->?[] = function ($application'.$argument.' = null) use ($dispatcher) { $dispatcher->dispatch(?, new '.$class.'($application'.$argument.')); }', [
             '@self',
             $property,
             $event,
