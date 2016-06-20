@@ -2,7 +2,6 @@
 
 namespace Tests\Integration;
 
-use Arachne\Bootstrap\Configurator;
 use Arachne\EventDispatcher\ApplicationEvents;
 use Arachne\EventDispatcher\Event\ApplicationErrorEvent;
 use Arachne\EventDispatcher\Event\ApplicationEvent;
@@ -16,7 +15,6 @@ use Nette\Application\Application;
 use Nette\Application\IPresenter;
 use Nette\Application\IResponse;
 use Nette\Application\Request;
-use Nette\DI\Container;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -34,16 +32,17 @@ class EventDispatcherExtensionTest extends Unit
      */
     public function testSubscriberException()
     {
-        $this->createContainer('subscriber-exception.neon');
+        $this->tester->useConfigFiles(['config/subscriber-exception.neon']);
+        $this->tester->getContainer();
     }
 
     public function testSubscriber()
     {
-        $container = $this->createContainer('subscriber.neon');
+        $this->tester->useConfigFiles(['config/subscriber.neon']);
 
         /* @var $dispatcher ContainerAwareEventDispatcher */
-        $dispatcher = $container->getByType(EventDispatcherInterface::class);
-        $subscriber = $container->getByType(TestSubscriber::class);
+        $dispatcher = $this->tester->grabService(EventDispatcherInterface::class);
+        $subscriber = $this->tester->grabService(TestSubscriber::class);
 
         $dispatcher->dispatch('tests.event1');
         $this->assertSame(0, $dispatcher->getListenerPriority('tests.event1', [$subscriber, 'event1']));
@@ -69,12 +68,12 @@ class EventDispatcherExtensionTest extends Unit
 
     public function testApplicationEvents()
     {
-        $container = $this->createContainer('application.neon');
+        $this->tester->useConfigFiles(['config/application.neon']);
 
         /* @var $application Application */
-        $application = $container->getByType(Application::class);
+        $application = $this->tester->grabService(Application::class);
         /* @var $subscriber ApplicationSubscriber */
-        $subscriber = $container->getByType(ApplicationSubscriber::class);
+        $subscriber = $this->tester->grabService(ApplicationSubscriber::class);
 
         $called = [];
 
@@ -139,12 +138,12 @@ class EventDispatcherExtensionTest extends Unit
 
     public function testApplicationShutdownWithoutException()
     {
-        $container = $this->createContainer('application.neon');
+        $this->tester->useConfigFiles(['config/application.neon']);
 
         /* @var $application Application */
-        $application = $container->getByType(Application::class);
+        $application = $this->tester->grabService(Application::class);
         /* @var $subscriber ApplicationSubscriber */
-        $subscriber = $container->getByType(ApplicationSubscriber::class);
+        $subscriber = $this->tester->grabService(ApplicationSubscriber::class);
 
         $called = [];
 
@@ -175,21 +174,9 @@ class EventDispatcherExtensionTest extends Unit
 
     public function testConsole()
     {
-        $container = $this->createContainer('console.neon');
-        $application = $container->getByType(Console::class);
+        $this->tester->useConfigFiles(['config/console.neon']);
+        $application = $this->tester->grabService(Console::class);
         $this->assertInstanceOf(Console::class, $application);
-        $this->assertAttributeSame($container->getByType(EventDispatcherInterface::class), 'dispatcher', $application);
-    }
-
-    /**
-     * @return Container
-     */
-    private function createContainer($file)
-    {
-        $config = new Configurator();
-        $config->setTempDirectory(TEMP_DIR);
-        $config->addConfig(__DIR__.'/../config/'.$file);
-
-        return $config->createContainer();
+        $this->assertAttributeSame($this->tester->grabService(EventDispatcherInterface::class), 'dispatcher', $application);
     }
 }
