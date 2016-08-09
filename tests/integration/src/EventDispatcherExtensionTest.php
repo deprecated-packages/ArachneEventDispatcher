@@ -179,4 +179,10 @@ class EventDispatcherExtensionTest extends Unit
         $this->assertInstanceOf(Console::class, $application);
         $this->assertAttributeSame($this->tester->grabService(EventDispatcherInterface::class), 'dispatcher', $application);
     }
+
+    public function testKdybyEvents()
+    {
+        $this->tester->useConfigFiles(['config/kdyby-events.neon']);
+        $this->assertInstanceOf(ContainerAwareEventDispatcher::class, $this->tester->grabService(EventDispatcherInterface::class));
+    }
 }

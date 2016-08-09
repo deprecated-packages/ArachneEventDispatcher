@@ -1,0 +1,7 @@
+extensions:
+    arachne.containeradapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
+    arachne.eventdispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
+    kdyby.events: Kdyby\Events\DI\EventsExtension
+
+kdyby.events:
+    debugger: false

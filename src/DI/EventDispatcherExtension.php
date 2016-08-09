@@ -37,6 +37,11 @@ class EventDispatcherExtension extends CompilerExtension
     {
         $builder = $this->getContainerBuilder();
 
+        // Remove Kdyby\Events\SymfonyDispatcher service to avoid conflict.
+        foreach ($this->compiler->getExtensions('Kdyby\Events\DI\EventsExtension') as $eventsExtension) {
+            $builder->removeDefinition($eventsExtension->prefix('symfonyProxy'));
+        }
+
         // Process event subscribers.
         $dispatcher = $builder->getDefinition($this->prefix('eventDispatcher'));
         foreach ($builder->findByTag(self::TAG_SUBSCRIBER) as $name => $attributes) {
