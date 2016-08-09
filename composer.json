@@ -20,11 +20,11 @@
     },
     "require-dev": {
         "php": "^5.5.0|^7.0.0",
-        "arachne/bootstrap": "^0.2.1",
-        "arachne/codeception": "^0.7.0",
+        "arachne/codeception": "^0.7.3",
         "codeception/codeception": "~2.2.0",
         "nette/application": "^2.3.0",
-        "kdyby/console": "^2.6.0"
+        "kdyby/console": "^2.6.1",
+        "kdyby/events": "^3.0.0"
     },
     "autoload": {
         "psr-4": {

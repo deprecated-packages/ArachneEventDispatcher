@@ -2,14 +2,3 @@ extensions:
     arachne.containeradapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
     arachne.eventdispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
     kdyby.console: Kdyby\Console\DI\ConsoleExtension
-
-# TODO: Remove everything from here to the rnd of the file.
-# https://github.com/Kdyby/Console/pull/56
-    nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension(%debugMode%, [], %tempDir%)
-    nette.http: Nette\Bridges\HttpDI\HttpExtension
-
-nette.application:
-    scanDirs: false
-
-services:
-    - Nette\Application\Routers\RouteList
