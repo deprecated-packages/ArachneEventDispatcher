@@ -23,6 +23,7 @@
         "arachne/codeception": "^0.7.3",
         "codeception/codeception": "~2.2.0",
         "nette/application": "^2.3.0",
+        "nette/di": "~2.3.0|^2.4.3@dev",
         "kdyby/console": "^2.6.1",
         "kdyby/events": "^3.0.0"
     },
