@@ -85,13 +85,13 @@ class EventDispatcherExtension extends CompilerExtension
                 $dispatcher->addSetup('?->addListenerService(?, ?)', [
                     '@self',
                     $event,
-                    [$service, $params], //callback
+                    [$service, $params], // callback
                 ]);
             } elseif (is_string($params[0])) {
                 $dispatcher->addSetup('?->addListenerService(?, ?, ?)', [
                     '@self',
                     $event,
-                    [$service, $params[0]], //callback
+                    [$service, $params[0]], // callback
                     isset($params[1]) ? $params[1] : 0, // priority
                 ]);
             } else {
@@ -99,7 +99,7 @@ class EventDispatcherExtension extends CompilerExtension
                     $dispatcher->addSetup('?->addListenerService(?, ?, ?)', [
                         '@self',
                         $event,
-                        [$service, $listener[0]], //callback
+                        [$service, $listener[0]], // callback
                         isset($listener[1]) ? $listener[1] : 0, // priority
                     ]);
                 }
