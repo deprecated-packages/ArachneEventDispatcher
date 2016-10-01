@@ -27,7 +27,7 @@ use Tests\Integration\Fixtures\TestSubscriber;
 class EventDispatcherExtensionTest extends Unit
 {
     /**
-     * @expectedException Nette\Utils\AssertionException
+     * @expectedException \Nette\Utils\AssertionException
      * @expectedExceptionMessage Subscriber 'subscriber' doesn't implement 'Symfony\Component\EventDispatcher\EventSubscriberInterface'.
      */
     public function testSubscriberException()
