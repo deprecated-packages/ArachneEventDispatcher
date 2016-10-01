@@ -22,6 +22,17 @@ extensions:
 
 See the documentation of [symfony/event-dispatcher](http://symfony.com/doc/current/components/event_dispatcher/index.html) for details.
 
+Troubleshooting
+----
+
+```
+Nette\DI\ServiceCreationException:
+Multiple services of type Symfony\Component\EventDispatcher\EventDispatcherInterface found:
+arachne.eventdispatcher.eventDispatcher, kdyby.events.symfonyProxy
+```
+
+This exception means you've installed arachne/event-dispatcher, kdyby/events and some other library (like kdyby/console) in a wrong order in your config.neon. Moving `Arachne\EventDispatcher\DI\EventDispatcherExtension` directly after `Kdyby\Events\DI\EventsExtension` should solve this issue.
+
 Subscribers
 ----
 

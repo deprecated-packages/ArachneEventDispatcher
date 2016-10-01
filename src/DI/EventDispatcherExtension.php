@@ -27,6 +27,8 @@ class EventDispatcherExtension extends CompilerExtension
 
     public function loadConfiguration()
     {
+        $this->removeKdybyEventsSymfonyProxy();
+
         $builder = $this->getContainerBuilder();
 
         $builder->addDefinition($this->prefix('eventDispatcher'))
@@ -35,12 +37,9 @@ class EventDispatcherExtension extends CompilerExtension
 
     public function beforeCompile()
     {
-        $builder = $this->getContainerBuilder();
+        $this->removeKdybyEventsSymfonyProxy();
 
-        // Remove Kdyby\Events\SymfonyDispatcher service to avoid conflict.
-        foreach ($this->compiler->getExtensions('Kdyby\Events\DI\EventsExtension') as $eventsExtension) {
-            $builder->removeDefinition($eventsExtension->prefix('symfonyProxy'));
-        }
+        $builder = $this->getContainerBuilder();
 
         // Process event subscribers.
         $dispatcher = $builder->getDefinition($this->prefix('eventDispatcher'));
@@ -68,6 +67,16 @@ class EventDispatcherExtension extends CompilerExtension
         // Bind dispatcher to console.
         foreach ($builder->findByType('Symfony\Component\Console\Application') as $console) {
             $console->addSetup('setDispatcher');
+        }
+    }
+
+    private function removeKdybyEventsSymfonyProxy()
+    {
+        $builder = $this->getContainerBuilder();
+
+        // Remove Kdyby\Events\SymfonyDispatcher service to avoid conflict.
+        foreach ($this->compiler->getExtensions('Kdyby\Events\DI\EventsExtension') as $eventsExtension) {
+            $builder->removeDefinition($eventsExtension->prefix('symfonyProxy'));
         }
     }
 
