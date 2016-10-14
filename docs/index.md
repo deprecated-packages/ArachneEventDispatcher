@@ -16,8 +16,8 @@ Now add these extensions to your config.neon.
 
 ```yml
 extensions:
-    arachne.containeradapter: Arachne/ContainerAdapter/DI/ContainerAdapterExtension
-    arachne.eventdispatcher: Arachne/EventDispatcher/DI/EventDispatcherExtension
+    arachne.containeradapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
+    arachne.eventdispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
 ```
 
 See the documentation of [symfony/event-dispatcher](http://symfony.com/doc/current/components/event_dispatcher/index.html) for details.
