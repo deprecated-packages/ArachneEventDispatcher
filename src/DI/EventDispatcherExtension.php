@@ -107,13 +107,16 @@ class EventDispatcherExtension extends CompilerExtension
                 $priority = isset($listener[1]) ? $listener[1] : 0;
                 $method = $listener[0];
 
-                $dispatcher->addSetup('?->addListener(?, function (...$arguments) { $this->getService(?)->?(...$arguments); }, ?)', [
-                    '@self',
-                    $event,
-                    $service,
-                    $method,
-                    $priority,
-                ]);
+                $dispatcher->addSetup(
+                    '?->addListener(?, function (...$arguments) { $this->getService(?)->?(...$arguments); }, ?)',
+                    [
+                        '@self',
+                        $event,
+                        $service,
+                        $method,
+                        $priority,
+                    ]
+                );
             }
         }
     }
