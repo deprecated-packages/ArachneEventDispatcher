@@ -34,7 +34,7 @@ class EventDispatcherExtensionTest extends Unit
 
     /**
      * @expectedException \Nette\Utils\AssertionException
-     * @expectedExceptionMessage Subscriber 'subscriber' doesn't implement 'Symfony\Component\EventDispatcher\EventSubscriberInterface'.
+     * @expectedExceptionMessage Subscriber "subscriber" doesn't implement "Symfony\Component\EventDispatcher\EventSubscriberInterface".
      */
     public function testSubscriberException()
     {

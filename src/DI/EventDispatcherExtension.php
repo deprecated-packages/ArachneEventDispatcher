@@ -50,7 +50,13 @@ class EventDispatcherExtension extends CompilerExtension
             $class = $builder->getDefinition($name)->getClass();
 
             if (!is_subclass_of($class, EventSubscriberInterface::class)) {
-                throw new AssertionException("Subscriber '$name' doesn't implement 'Symfony\Component\EventDispatcher\EventSubscriberInterface'.");
+                throw new AssertionException(
+                    sprintf(
+                        'Subscriber "%s" doesn\'t implement "%s".',
+                        $name,
+                        EventSubscriberInterface::class
+                    )
+                );
             }
 
             $this->registerSubscriber($dispatcher, $name, $class);
@@ -131,10 +137,18 @@ class EventDispatcherExtension extends CompilerExtension
     private function bindApplicationEvent(ServiceDefinition $application, $event, $class, $property, $argument = null)
     {
         $argument = $argument ? ', $'.$argument : '';
-        $application->addSetup('?->?[] = function ($application'.$argument.' = null) use ($dispatcher) { $dispatcher->dispatch(?, new '.$class.'($application'.$argument.')); }', [
-            '@self',
-            $property,
-            $event,
-        ]);
+        $application->addSetup(
+            sprintf(
+                '?->?[] = function ($application%s = null) use ($dispatcher) { $dispatcher->dispatch(?, new %s($application%s)); }',
+                $argument,
+                $class,
+                $argument
+            ),
+            [
+                '@self',
+                $property,
+                $event,
+            ]
+        );
     }
 }
