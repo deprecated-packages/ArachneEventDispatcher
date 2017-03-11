@@ -3,9 +3,20 @@
 namespace Arachne\EventDispatcher\DI;
 
 use Arachne\EventDispatcher\ApplicationEvents;
+use Arachne\EventDispatcher\Event\ApplicationErrorEvent;
+use Arachne\EventDispatcher\Event\ApplicationEvent;
+use Arachne\EventDispatcher\Event\ApplicationPresenterEvent;
+use Arachne\EventDispatcher\Event\ApplicationRequestEvent;
+use Arachne\EventDispatcher\Event\ApplicationResponseEvent;
+use Arachne\EventDispatcher\Event\ApplicationShutdownEvent;
+use Kdyby\Events\DI\EventsExtension;
+use Nette\Application\Application;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ServiceDefinition;
 use Nette\Utils\AssertionException;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
@@ -24,7 +35,7 @@ class EventDispatcherExtension extends CompilerExtension
         $builder = $this->getContainerBuilder();
 
         $builder->addDefinition($this->prefix('eventDispatcher'))
-            ->setClass('Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher');
+            ->setClass(ContainerAwareEventDispatcher::class);
     }
 
     public function beforeCompile()
@@ -38,7 +49,7 @@ class EventDispatcherExtension extends CompilerExtension
         foreach ($builder->findByTag(self::TAG_SUBSCRIBER) as $name => $attributes) {
             $class = $builder->getDefinition($name)->getClass();
 
-            if (!is_subclass_of($class, 'Symfony\Component\EventDispatcher\EventSubscriberInterface')) {
+            if (!is_subclass_of($class, EventSubscriberInterface::class)) {
                 throw new AssertionException("Subscriber '$name' doesn't implement 'Symfony\Component\EventDispatcher\EventSubscriberInterface'.");
             }
 
@@ -46,18 +57,18 @@ class EventDispatcherExtension extends CompilerExtension
         }
 
         // Bind dispatcher to Nette\Application\Application events.
-        foreach ($builder->findByType('Nette\Application\Application') as $application) {
+        foreach ($builder->findByType(Application::class) as $application) {
             $application->addSetup('$dispatcher = ?', ['@'.$this->prefix('eventDispatcher')]);
-            $this->bindApplicationEvent($application, ApplicationEvents::STARTUP, 'Arachne\EventDispatcher\Event\ApplicationEvent', 'onStartup');
-            $this->bindApplicationEvent($application, ApplicationEvents::SHUTDOWN, 'Arachne\EventDispatcher\Event\ApplicationShutdownEvent', 'onShutdown', 'exception');
-            $this->bindApplicationEvent($application, ApplicationEvents::REQUEST, 'Arachne\EventDispatcher\Event\ApplicationRequestEvent', 'onRequest', 'request');
-            $this->bindApplicationEvent($application, ApplicationEvents::PRESENTER, 'Arachne\EventDispatcher\Event\ApplicationPresenterEvent', 'onPresenter', 'presenter');
-            $this->bindApplicationEvent($application, ApplicationEvents::RESPONSE, 'Arachne\EventDispatcher\Event\ApplicationResponseEvent', 'onResponse', 'response');
-            $this->bindApplicationEvent($application, ApplicationEvents::ERROR, 'Arachne\EventDispatcher\Event\ApplicationErrorEvent', 'onError', 'exception');
+            $this->bindApplicationEvent($application, ApplicationEvents::STARTUP, ApplicationEvent::class, 'onStartup');
+            $this->bindApplicationEvent($application, ApplicationEvents::SHUTDOWN, ApplicationShutdownEvent::class, 'onShutdown', 'exception');
+            $this->bindApplicationEvent($application, ApplicationEvents::REQUEST, ApplicationRequestEvent::class, 'onRequest', 'request');
+            $this->bindApplicationEvent($application, ApplicationEvents::PRESENTER, ApplicationPresenterEvent::class, 'onPresenter', 'presenter');
+            $this->bindApplicationEvent($application, ApplicationEvents::RESPONSE, ApplicationResponseEvent::class, 'onResponse', 'response');
+            $this->bindApplicationEvent($application, ApplicationEvents::ERROR, ApplicationErrorEvent::class, 'onError', 'exception');
         }
 
         // Bind dispatcher to console.
-        foreach ($builder->findByType('Symfony\Component\Console\Application') as $console) {
+        foreach ($builder->findByType(ConsoleApplication::class) as $console) {
             $console->addSetup('setDispatcher');
         }
     }
@@ -67,7 +78,7 @@ class EventDispatcherExtension extends CompilerExtension
         $builder = $this->getContainerBuilder();
 
         // Remove Kdyby\Events\SymfonyDispatcher service to avoid conflict.
-        foreach ($this->compiler->getExtensions('Kdyby\Events\DI\EventsExtension') as $eventsExtension) {
+        foreach ($this->compiler->getExtensions(EventsExtension::class) as $eventsExtension) {
             $builder->removeDefinition($eventsExtension->prefix('symfonyProxy'));
         }
     }
