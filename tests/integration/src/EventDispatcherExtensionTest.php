@@ -49,7 +49,11 @@ class EventDispatcherExtensionTest extends Unit
 
         /* @var $dispatcher ContainerAwareEventDispatcher */
         $dispatcher = $this->tester->grabService(EventDispatcherInterface::class);
+
+        // Make sure the subscriber is initialized lazily.
+        self::assertFalse($this->tester->getContainer()->isCreated('subscriber'));
         $subscriber = $this->tester->grabService(TestSubscriber::class);
+        self::assertTrue($this->tester->getContainer()->isCreated('subscriber'));
 
         $dispatcher->dispatch('tests.event1');
         $dispatcher->dispatch('tests.event2');
