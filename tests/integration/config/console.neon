@@ -1,4 +1,4 @@
 extensions:
-    arachne.containeradapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
-    arachne.eventdispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
+    arachne.containerAdapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
+    arachne.eventDispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
     kdyby.console: Kdyby\Console\DI\ConsoleExtension
