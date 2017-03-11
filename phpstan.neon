@@ -4,3 +4,4 @@ includes:
 
 parameters:
     ignoreErrors:
+        - '#Parameter \#2 \$listener of method Symfony\\Component\\EventDispatcher\\ContainerAwareEventDispatcher::getListenerPriority\(\) expects callable, mixed\[\] given#'

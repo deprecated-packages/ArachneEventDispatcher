@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use Arachne\Codeception\Module\NetteDIModule;
 use Arachne\EventDispatcher\ApplicationEvents;
 use Arachne\EventDispatcher\Event\ApplicationErrorEvent;
 use Arachne\EventDispatcher\Event\ApplicationEvent;
@@ -26,6 +27,11 @@ use Tests\Integration\Fixtures\TestSubscriber;
  */
 class EventDispatcherExtensionTest extends Unit
 {
+    /**
+     * @var NetteDIModule
+     */
+    protected $tester;
+
     /**
      * @expectedException \Nette\Utils\AssertionException
      * @expectedExceptionMessage Subscriber 'subscriber' doesn't implement 'Symfony\Component\EventDispatcher\EventSubscriberInterface'.
