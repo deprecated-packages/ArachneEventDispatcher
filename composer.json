@@ -12,18 +12,17 @@
         }
     ],
     "require": {
-        "php": "^5.4.0|^7.0.0",
+        "php": "^5.5.0|^7.0.0",
         "arachne/container-adapter": "^0.1.0|^0.2.0",
         "nette/di": "^2.3.0",
         "nette/utils": "^2.3.0",
         "symfony/event-dispatcher": "^2.8.0|^3.0.0"
     },
     "require-dev": {
-        "php": "^5.5.0|^7.0.0",
         "arachne/codeception": "^0.7.3",
-        "codeception/codeception": "~2.2.0",
+        "codeception/codeception": "^2.2.0",
         "nette/application": "^2.3.0",
-        "nette/di": "~2.3.0|^2.4.3@dev",
+        "nette/di": "~2.3.0|^2.4.3",
         "kdyby/console": "^2.6.1",
         "kdyby/events": "^3.0.0"
     },
@@ -36,5 +35,19 @@
         "psr-4": {
             "Tests\\Integration\\": "tests/integration/src"
         }
+    },
+    "scripts": {
+        "all": [
+            "@fix",
+            "@analyse",
+            "@test"
+        ],
+        "tools": "sh composer-tools.sh",
+        "fix": "\"vendor-tools/bin/php-cs-fixer\" fix",
+        "analyse": "\"vendor-tools/bin/phpstan\" analyse --no-progress --level=5 --configuration=phpstan.neon src tests",
+        "test": [
+            "\"vendor/bin/codecept\" build",
+            "\"vendor/bin/codecept\" run --debug"
+        ]
     }
 }
