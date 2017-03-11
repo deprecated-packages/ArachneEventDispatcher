@@ -1,5 +1,4 @@
 extensions:
-    arachne.containerAdapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
     arachne.eventDispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
 
 services:

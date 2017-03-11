@@ -12,16 +12,15 @@
         }
     ],
     "require": {
-        "php": "^5.5.0|^7.0.0",
-        "arachne/container-adapter": "^0.1.0|^0.2.0",
-        "nette/di": "^2.3.0",
-        "nette/utils": "^2.3.0",
-        "symfony/event-dispatcher": "^2.8.0|^3.0.0"
+        "php": "^7.0.0",
+        "nette/di": "^2.4.0",
+        "nette/utils": "^2.4.0",
+        "symfony/event-dispatcher": "^3.2.0"
     },
     "require-dev": {
         "arachne/codeception": "^0.7.3",
         "codeception/codeception": "^2.2.0",
-        "nette/application": "^2.3.0",
+        "nette/application": "^2.4.0",
         "kdyby/console": "^2.6.1",
         "kdyby/events": "^3.0.0"
     },

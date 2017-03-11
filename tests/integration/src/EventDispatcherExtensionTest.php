@@ -18,6 +18,7 @@ use Nette\Application\IResponse;
 use Nette\Application\Request;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Tests\Integration\Fixtures\ApplicationSubscriber;
 use Tests\Integration\Fixtures\TestSubscriber;
@@ -51,14 +52,9 @@ class EventDispatcherExtensionTest extends Unit
         $subscriber = $this->tester->grabService(TestSubscriber::class);
 
         $dispatcher->dispatch('tests.event1');
-        $this->assertSame(0, $dispatcher->getListenerPriority('tests.event1', [$subscriber, 'event1']));
         $dispatcher->dispatch('tests.event2');
-        $this->assertSame(0, $dispatcher->getListenerPriority('tests.event2', [$subscriber, 'event2']));
         $dispatcher->dispatch('tests.event3');
-        $this->assertSame(10, $dispatcher->getListenerPriority('tests.event3', [$subscriber, 'event3']));
         $dispatcher->dispatch('tests.event4');
-        $this->assertSame(0, $dispatcher->getListenerPriority('tests.event4', [$subscriber, 'event4handler1']));
-        $this->assertSame(10, $dispatcher->getListenerPriority('tests.event4', [$subscriber, 'event4handler2']));
 
         $this->assertSame(
             [
@@ -189,6 +185,6 @@ class EventDispatcherExtensionTest extends Unit
     public function testKdybyEvents()
     {
         $this->tester->useConfigFiles(['config/kdyby-events.neon']);
-        $this->assertInstanceOf(ContainerAwareEventDispatcher::class, $this->tester->grabService(EventDispatcherInterface::class));
+        $this->assertInstanceOf(EventDispatcher::class, $this->tester->grabService(EventDispatcherInterface::class));
     }
 }

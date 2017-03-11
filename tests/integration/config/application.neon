@@ -1,5 +1,4 @@
 extensions:
-    arachne.containerAdapter: Arachne\ContainerAdapter\DI\ContainerAdapterExtension
     arachne.eventDispatcher: Arachne\EventDispatcher\DI\EventDispatcherExtension
     nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension(%debugMode%, [], %tempDir%)
     nette.http: Nette\Bridges\HttpDI\HttpExtension

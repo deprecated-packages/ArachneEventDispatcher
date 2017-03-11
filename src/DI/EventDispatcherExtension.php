@@ -15,7 +15,7 @@ use Nette\DI\CompilerExtension;
 use Nette\DI\ServiceDefinition;
 use Nette\Utils\AssertionException;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -35,7 +35,7 @@ class EventDispatcherExtension extends CompilerExtension
         $builder = $this->getContainerBuilder();
 
         $builder->addDefinition($this->prefix('eventDispatcher'))
-            ->setClass(ContainerAwareEventDispatcher::class);
+            ->setClass(EventDispatcher::class);
     }
 
     public function beforeCompile()
@@ -90,37 +90,30 @@ class EventDispatcherExtension extends CompilerExtension
     }
 
     /**
-     * Emulates ContainerAwareEventDispatcher::addSubscriberService() to prevent autoloading of all subscribers in runtime.
-     *
      * @param ServiceDefinition $dispatcher
      * @param string            $service
      * @param string            $class
      */
     private function registerSubscriber(ServiceDefinition $dispatcher, $service, $class)
     {
-        foreach ($class::getSubscribedEvents() as $event => $params) {
-            if (is_string($params)) {
-                $dispatcher->addSetup('?->addListenerService(?, ?)', [
+        foreach ($class::getSubscribedEvents() as $event => $listeners) {
+            if (is_string($listeners)) {
+                $listeners = [[$listeners]];
+            } elseif (is_string($listeners[0])) {
+                $listeners = [$listeners];
+            }
+
+            foreach ($listeners as $listener) {
+                $priority = isset($listener[1]) ? $listener[1] : 0;
+                $method = $listener[0];
+
+                $dispatcher->addSetup('?->addListener(?, function (...$arguments) { $this->getService(?)->?(...$arguments); }, ?)', [
                     '@self',
                     $event,
-                    [$service, $params], // callback
+                    $service,
+                    $method,
+                    $priority,
                 ]);
-            } elseif (is_string($params[0])) {
-                $dispatcher->addSetup('?->addListenerService(?, ?, ?)', [
-                    '@self',
-                    $event,
-                    [$service, $params[0]], // callback
-                    isset($params[1]) ? $params[1] : 0, // priority
-                ]);
-            } else {
-                foreach ($params as $listener) {
-                    $dispatcher->addSetup('?->addListenerService(?, ?, ?)', [
-                        '@self',
-                        $event,
-                        [$service, $listener[0]], // callback
-                        isset($listener[1]) ? $listener[1] : 0, // priority
-                    ]);
-                }
             }
         }
     }
