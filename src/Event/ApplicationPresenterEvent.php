@@ -4,7 +4,6 @@ namespace Arachne\EventDispatcher\Event;
 
 use Nette\Application\Application;
 use Nette\Application\IPresenter;
-use Nette\Application\UI\Presenter;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -18,7 +17,7 @@ class ApplicationPresenterEvent extends Event
     private $application;
 
     /**
-     * @var IPresenter|Presenter
+     * @var IPresenter
      */
     private $presenter;
 
@@ -31,15 +30,15 @@ class ApplicationPresenterEvent extends Event
     /**
      * @return Application
      */
-    public function getApplication()
+    public function getApplication(): Application
     {
         return $this->application;
     }
 
     /**
-     * @return IPresenter|Presenter
+     * @return IPresenter
      */
-    public function getPresenter()
+    public function getPresenter(): IPresenter
     {
         return $this->presenter;
     }

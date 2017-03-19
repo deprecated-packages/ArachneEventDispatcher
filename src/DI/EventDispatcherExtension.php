@@ -28,7 +28,7 @@ class EventDispatcherExtension extends CompilerExtension
      */
     const TAG_SUBSCRIBER = 'arachne.eventDispatcher.subscriber';
 
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         $this->removeKdybyEventsSymfonyProxy();
 
@@ -38,7 +38,7 @@ class EventDispatcherExtension extends CompilerExtension
             ->setClass(EventDispatcher::class);
     }
 
-    public function beforeCompile()
+    public function beforeCompile(): void
     {
         $this->removeKdybyEventsSymfonyProxy();
 
@@ -79,7 +79,7 @@ class EventDispatcherExtension extends CompilerExtension
         }
     }
 
-    private function removeKdybyEventsSymfonyProxy()
+    private function removeKdybyEventsSymfonyProxy(): void
     {
         $builder = $this->getContainerBuilder();
 
@@ -94,7 +94,7 @@ class EventDispatcherExtension extends CompilerExtension
      * @param string            $service
      * @param string            $class
      */
-    private function registerSubscriber(ServiceDefinition $dispatcher, $service, $class)
+    private function registerSubscriber(ServiceDefinition $dispatcher, $service, $class): void
     {
         foreach ($class::getSubscribedEvents() as $event => $listeners) {
             if (is_string($listeners)) {
@@ -130,7 +130,7 @@ class EventDispatcherExtension extends CompilerExtension
      * @param string            $property
      * @param string            $argument
      */
-    private function bindApplicationEvent(ServiceDefinition $application, $event, $class, $property, $argument = null)
+    private function bindApplicationEvent(ServiceDefinition $application, $event, $class, $property, $argument = null): void
     {
         $argument = $argument ? ', $'.$argument : '';
         $application->addSetup(

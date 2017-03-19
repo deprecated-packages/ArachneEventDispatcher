@@ -2,7 +2,6 @@
 
 namespace Arachne\EventDispatcher\Event;
 
-use Exception;
 use Nette\Application\Application;
 use Symfony\Component\EventDispatcher\Event;
 use Throwable;
@@ -18,11 +17,11 @@ class ApplicationShutdownEvent extends Event
     private $application;
 
     /**
-     * @var Throwable|Exception|null
+     * @var Throwable|null
      */
     private $exception;
 
-    public function __construct(Application $application, $exception = null)
+    public function __construct(Application $application, ?Throwable $exception = null)
     {
         $this->application = $application;
         $this->exception = $exception;
@@ -31,15 +30,15 @@ class ApplicationShutdownEvent extends Event
     /**
      * @return Application
      */
-    public function getApplication()
+    public function getApplication(): Application
     {
         return $this->application;
     }
 
     /**
-     * @return Throwable|Exception|null
+     * @return Throwable|null
      */
-    public function getException()
+    public function getException(): ?Throwable
     {
         return $this->exception;
     }

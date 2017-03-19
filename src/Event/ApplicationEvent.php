@@ -23,7 +23,7 @@ class ApplicationEvent extends Event
     /**
      * @return Application
      */
-    public function getApplication()
+    public function getApplication(): Application
     {
         return $this->application;
     }

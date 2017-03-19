@@ -30,7 +30,7 @@ class ApplicationRequestEvent extends Event
     /**
      * @return Application
      */
-    public function getApplication()
+    public function getApplication(): Application
     {
         return $this->application;
     }
@@ -38,7 +38,7 @@ class ApplicationRequestEvent extends Event
     /**
      * @return Request
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
