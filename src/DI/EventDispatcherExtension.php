@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Arachne\EventDispatcher\DI;
 
 use Arachne\EventDispatcher\ApplicationEvents;
