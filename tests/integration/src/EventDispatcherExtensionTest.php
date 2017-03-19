@@ -36,7 +36,7 @@ class EventDispatcherExtensionTest extends Unit
      */
     protected $tester;
 
-    public function testSubscriberException()
+    public function testSubscriberException(): void
     {
         $this->tester->useConfigFiles(['config/subscriber-exception.neon']);
         try {
@@ -47,7 +47,7 @@ class EventDispatcherExtensionTest extends Unit
         }
     }
 
-    public function testSubscriber()
+    public function testSubscriber(): void
     {
         $this->tester->useConfigFiles(['config/subscriber.neon']);
 
@@ -76,7 +76,7 @@ class EventDispatcherExtensionTest extends Unit
         );
     }
 
-    public function testApplicationEvents()
+    public function testApplicationEvents(): void
     {
         $this->tester->useConfigFiles(['config/application.neon']);
 
@@ -146,7 +146,7 @@ class EventDispatcherExtensionTest extends Unit
         );
     }
 
-    public function testApplicationShutdownWithoutException()
+    public function testApplicationShutdownWithoutException(): void
     {
         $this->tester->useConfigFiles(['config/application.neon']);
 
