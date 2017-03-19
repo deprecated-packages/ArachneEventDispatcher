@@ -41,7 +41,7 @@ class EventDispatcherExtensionTest extends Unit
         $this->tester->useConfigFiles(['config/subscriber-exception.neon']);
         try {
             $this->tester->getContainer();
-            $this->fail();
+            self::fail();
         } catch (AssertionException $e) {
             self::assertSame('Subscriber "subscriber" doesn\'t implement "Symfony\Component\EventDispatcher\EventSubscriberInterface".', $e->getMessage());
         }
@@ -127,7 +127,7 @@ class EventDispatcherExtensionTest extends Unit
                     break;
 
                 default:
-                    $this->fail("Unknown event '$name'");
+                    self::fail("Unknown event '$name'");
             }
         });
 
@@ -168,7 +168,7 @@ class EventDispatcherExtensionTest extends Unit
                     break;
 
                 default:
-                    $this->fail("Unknown event '$name'");
+                    self::fail("Unknown event '$name'");
             }
         });
 
