@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\Fixtures;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,7 +16,7 @@ class TestSubscriber implements EventSubscriberInterface
      */
     public $log;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'tests.event1' => 'event1',
@@ -27,27 +29,27 @@ class TestSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function event1()
+    public function event1(): void
     {
         $this->log[] = __METHOD__;
     }
 
-    public function event2()
+    public function event2(): void
     {
         $this->log[] = __METHOD__;
     }
 
-    public function event3()
+    public function event3(): void
     {
         $this->log[] = __METHOD__;
     }
 
-    public function event4handler1()
+    public function event4handler1(): void
     {
         $this->log[] = __METHOD__;
     }
 
-    public function event4handler2()
+    public function event4handler2(): void
     {
         $this->log[] = __METHOD__;
     }

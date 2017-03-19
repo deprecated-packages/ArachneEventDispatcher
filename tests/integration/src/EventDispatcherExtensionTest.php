@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration;
 
 use Arachne\Codeception\Module\NetteDIModule;
@@ -16,6 +18,7 @@ use Nette\Application\Application;
 use Nette\Application\IPresenter;
 use Nette\Application\IResponse;
 use Nette\Application\Request;
+use Nette\Utils\AssertionException;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -33,14 +36,15 @@ class EventDispatcherExtensionTest extends Unit
      */
     protected $tester;
 
-    /**
-     * @expectedException \Nette\Utils\AssertionException
-     * @expectedExceptionMessage Subscriber "subscriber" doesn't implement "Symfony\Component\EventDispatcher\EventSubscriberInterface".
-     */
     public function testSubscriberException()
     {
         $this->tester->useConfigFiles(['config/subscriber-exception.neon']);
-        $this->tester->getContainer();
+        try {
+            $this->tester->getContainer();
+            $this->fail();
+        } catch (AssertionException $e) {
+            self::assertSame('Subscriber "subscriber" doesn\'t implement "Symfony\Component\EventDispatcher\EventSubscriberInterface".', $e->getMessage());
+        }
     }
 
     public function testSubscriber()
@@ -76,9 +80,9 @@ class EventDispatcherExtensionTest extends Unit
     {
         $this->tester->useConfigFiles(['config/application.neon']);
 
-        /* @var $application Application */
+        /** @var Application $application */
         $application = $this->tester->grabService(Application::class);
-        /* @var $subscriber ApplicationSubscriber */
+        /** @var ApplicationSubscriber $subscriber */
         $subscriber = $this->tester->grabService(ApplicationSubscriber::class);
 
         $called = [];
@@ -146,9 +150,9 @@ class EventDispatcherExtensionTest extends Unit
     {
         $this->tester->useConfigFiles(['config/application.neon']);
 
-        /* @var $application Application */
+        /** @var Application $application */
         $application = $this->tester->grabService(Application::class);
-        /* @var $subscriber ApplicationSubscriber */
+        /** @var ApplicationSubscriber $subscriber */
         $subscriber = $this->tester->grabService(ApplicationSubscriber::class);
 
         $called = [];

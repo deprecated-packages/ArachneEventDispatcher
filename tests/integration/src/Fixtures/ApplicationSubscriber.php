@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\Fixtures;
 
+use Arachne\EventDispatcher\ApplicationEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -14,25 +17,25 @@ class ApplicationSubscriber implements EventSubscriberInterface
      */
     private $assert;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            \Arachne\EventDispatcher\ApplicationEvents::STARTUP => 'event',
-            \Arachne\EventDispatcher\ApplicationEvents::SHUTDOWN => 'event',
-            \Arachne\EventDispatcher\ApplicationEvents::REQUEST => 'event',
-            \Arachne\EventDispatcher\ApplicationEvents::PRESENTER => 'event',
-            \Arachne\EventDispatcher\ApplicationEvents::RESPONSE => 'event',
-            \Arachne\EventDispatcher\ApplicationEvents::ERROR => 'event',
+            ApplicationEvents::STARTUP => 'event',
+            ApplicationEvents::SHUTDOWN => 'event',
+            ApplicationEvents::REQUEST => 'event',
+            ApplicationEvents::PRESENTER => 'event',
+            ApplicationEvents::RESPONSE => 'event',
+            ApplicationEvents::ERROR => 'event',
         ];
     }
 
-    public function setAssertionCallback(callable $assert)
+    public function setAssertionCallback(callable $assert): void
     {
         $this->assert = $assert;
     }
 
-    public function event()
+    public function event(...$arguments): void
     {
-        call_user_func_array($this->assert, func_get_args());
+        ($this->assert)(...$arguments);
     }
 }
