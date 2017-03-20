@@ -96,7 +96,7 @@ class EventDispatcherExtension extends CompilerExtension
      * @param string            $service
      * @param string            $class
      */
-    private function registerSubscriber(ServiceDefinition $dispatcher, $service, $class): void
+    private function registerSubscriber(ServiceDefinition $dispatcher, string $service, string $class): void
     {
         foreach ($class::getSubscribedEvents() as $event => $listeners) {
             if (is_string($listeners)) {
@@ -132,7 +132,7 @@ class EventDispatcherExtension extends CompilerExtension
      * @param string            $property
      * @param string            $argument
      */
-    private function bindApplicationEvent(ServiceDefinition $application, $event, $class, $property, $argument = null): void
+    private function bindApplicationEvent(ServiceDefinition $application, string $event, string $class, string $property, string $argument = null): void
     {
         $argument = $argument ? ', $'.$argument : '';
         $application->addSetup(
