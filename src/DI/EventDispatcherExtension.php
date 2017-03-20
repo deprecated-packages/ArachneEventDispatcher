@@ -61,7 +61,7 @@ class EventDispatcherExtension extends CompilerExtension
                 );
             }
 
-            $this->registerSubscriber($dispatcher, $name, $class);
+            $this->registerSubscriber($dispatcher, (string) $name, $class);
         }
 
         // Bind dispatcher to Nette\Application\Application events.
